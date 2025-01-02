@@ -5,7 +5,6 @@
   background-position: center;  
   }
 .navbar{
-    position: fixed;
-    width: 100vw;
-    margin-bottom: 50px!important;
+    position: absolute;
+    width: 100vw;    
 }

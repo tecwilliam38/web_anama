@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import "./style.css"
 import api from '../../constants/api';
-import { useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function Menu() {
     const navigate = useNavigate();
@@ -42,9 +42,9 @@ export default function Menu() {
 
     return (
         <>
-            <nav className="navbar navbar-expand-lg navbar-dark bg-navbar m-0">
+            <nav className="navbar navbar-expand-lg navbar-dark bg-navbar " style={{ height: 110 }}>
                 <a className="navbar-brand " href="#">
-                    <img src={require("../../assets/logo.png")} />
+                    <img src={require("../../assets/logo.png")} style={{ height: 55 }} />
                 </a>
                 <button className="navbar-toggler text-light" type="button" data-toggle="collapse" data-target="#conteudoNavbarSuportado" aria-controls="conteudoNavbarSuportado" aria-expanded="false" aria-label="Alterna navegação">
                     <span className="navbar-toggler-icon"></span>
@@ -81,7 +81,6 @@ export default function Menu() {
                         </div>
                     </div>
                 </div>
-
             </nav>
         </>
     )

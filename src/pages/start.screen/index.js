@@ -46,9 +46,9 @@ export default function StartScreen() {
   return (
     <>
       <Menu />
-      <div className='continer-fluid'>
-        <div className="align-items-center d-flex bg" >
-          <div className="row ml-5">
+      <div className='continer-fluid bg'>
+        <div className="align-items-center d-flex mt-5" >
+          <div className="row ml-5 mt-4">
             <div className="mt-5 col-sm-12 col-12 text-center ">
               <form className="form-group text-light">
                 <div className="px-4 pt-3 pb-2 ">
@@ -69,13 +69,10 @@ export default function StartScreen() {
                       className="form-control"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)} />
-                    {/* <Link onClick={() => setShowPass("text")}>Exibir senha</Link> */}
                   </div>
                   <div className="mt-3 mb-5">
                     <button onClick={HandleRegister} className="btn btn-primary w-100" type="button">Cadastrar</button>
                   </div>
-                  {/* <span className="me-1">Já tenho uma conta.</span>
-                  <Link to="/" className="ml-2">Faça login!</Link> */}
                 </div>
               </form>
             </div>
