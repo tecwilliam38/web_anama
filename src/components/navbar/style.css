@@ -1,0 +1,11 @@
+.bg-navbar{
+  background-image: url("../../assets/menubgblue.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;  
+  }
+.navbar{
+    position: fixed;
+    width: 100vw;
+    margin-bottom: 50px!important;
+}

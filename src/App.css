@@ -1,7 +1,32 @@
 .App {
   text-align: center;
 }
-
+.image-bg{
+  width: 99%;
+  height: auto;
+  overflow: hidden;
+}
+.bg{
+  background-image: url("./assets/bgLogin.png");
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  width: 100vw;
+  background-repeat: no-repeat;
+  object-position: center;
+}
+#bg {
+  /* position: fixed;  */
+  background-image: url("./assets/bgLogin.png");
+  overflow: hidden;  
+  background-size: cover;
+  height: 100vh;
+  width: 100%;
+  background-repeat: no-repeat;
+  object-position: left;
+  /* margin-top: 30px; */  
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -13,8 +38,8 @@
   }
 }
 
+/* background-color: #282c34; */
 .App-header {
-  background-color: #282c34;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
