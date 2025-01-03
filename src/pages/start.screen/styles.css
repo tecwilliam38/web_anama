@@ -3,8 +3,21 @@
     overflow: hidden;
     /* margin-top:60px; */
     background-size: cover;
-    background-position: center;
-    width: 100vw;
-    height:100vh;    
+    background-position: absolute;
+    width: 100vw;    
     background-repeat: no-repeat;    
   }
+  .logo-login{
+    height: 50px;    
+    margin-bottom: 15px;
+  }
+  .bg-navbar{
+    background-image: url("../../assets/menubgblue.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;  
+    }
+.nav-input{
+height: 36px;
+}
+

@@ -14,6 +14,35 @@ export default function StartScreen() {
   const [msg, setMsg] = useState("");
   const [showPpass, setShowPass] = useState("password");
 
+  async function HandleLogin() {
+    setMsg("");
+    try {
+      const response = await api.post("/users/login", {
+        email,
+        password
+      });
+      if (response.data) {
+        // Armazenar os dados da response em variáveis - "sessionToken, sessionId..."
+        localStorage.setItem("sessionToken", response.data.token);
+        localStorage.setItem("sessionId", response.data.id_admin);
+        localStorage.setItem("sessionEmail", response.data.email);
+        localStorage.setItem("sessionName", response.data.name);
+        api.defaults.headers.common['authorization'] = "Bearer " + response.data.token;
+        navigate("/home")
+      } else {
+        console.log(response);
+      }
+    } catch (error) {
+      if (error.response?.data.error) {
+        setMsg(error.response?.data.error);
+      } else {
+        setMsg("Ocorreu um erro ao efetuar login")
+      }
+      console.log(error);
+
+    }
+  }
+
   async function HandleRegister() {
     setMsg("");
     try {
@@ -24,6 +53,7 @@ export default function StartScreen() {
       });
 
       if (response.data) {
+         // Armazenar os dados da response em variáveis - "sessionToken, sessionId..."
         localStorage.setItem("sessionToken", response.data.token);
         localStorage.setItem("sessionId", response.data.id_admin);
         localStorage.setItem("sessionEmail", email);
@@ -45,41 +75,75 @@ export default function StartScreen() {
   }
   return (
     <>
-      <Menu />
-      <div className='continer-fluid bg'>
-        <div className="align-items-center d-flex mt-5" >
-          <div className="row ml-5 mt-4">
-            <div className="mt-5 col-sm-12 col-12 text-center ">
-              <form className="form-group text-light">
-                <div className="px-4 pt-3 pb-2 ">
-                  <h1 className="mb-4">Abra uma conta</h1>
-                  <div className="mt-4">
-                    <input type="text" placeholder="Nome"
-                      className="form-control"
-                      onChange={(e) => setName(e.target.value)} />
-                  </div>
-                  <div className="mt-4">
-                    <input type="email" placeholder="E-mail"
-                      className="form-control"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)} />
-                  </div>
-                  <div className="mt-4">
-                    <input type={showPpass} placeholder="Nova senha"
-                      className="form-control"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)} />
-                  </div>
-                  <div className="mt-3 mb-5">
-                    <button onClick={HandleRegister} className="btn btn-primary w-100" type="button">Cadastrar</button>
-                  </div>
-                </div>
-              </form>
-            </div>
-            <div className="col-sm-7 h1"></div>
-          </div>
+      <div className="container-fluid bg">        
+        <div className='row bg-navbar d-flex align-items-center'>
+          <img src={require("../../assets/logo.png")} alt="Anama" className='logo-login' />
+          <section className='row'>
+            <article className='col-11 col-sm-5 mx-auto mx-lg-0 my-1'>
+              <input type="email" placeholder="E-mail"
+                className="form-control nav-input"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)} />
+            </article>
+            <article className='col-11 col-sm-4 mx-auto mx-lg-0 my-1'>
+              <input type={showPpass} placeholder="Senha"
+                className="form-control nav-input"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)} />
+            </article>
+            <article className='col-11 col-sm-3 mx-auto mx-lg-0 my-lg-1'>
+              <button onClick={HandleLogin} className="nav-input btn btn-sm btn-block btn-primary" type="button">Login</button>
+            </article>
+          </section>
         </div>
+        <div className='row ml-sm-5 d-flex align-items-center' >
+          <div className='col col-sm-4 col-12 d-flex justify-content-start align-items-center'>
+            <form className="form-group text-light">
+              <div className="px-4 mt-sm-5 pt-3 pb-2 ">
+                <h1 className="mb-4">Abra uma conta</h1>
+                <div className="mt-4">
+                  <input type="text" placeholder="Nome"
+                    className="form-control"
+                    onChange={(e) => setName(e.target.value)} />
+                </div>
+                <div className="mt-4">
+                  <input type="email" placeholder="E-mail"
+                    className="form-control"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)} />
+                </div>
+                <div className="mt-4">
+                  <input type={showPpass} placeholder="Nova senha"
+                    className="form-control"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)} />
+                </div>
+                <div className="mt-3 mb-5">
+                  <button onClick={HandleRegister} className="btn btn-primary w-100" type="button">Cadastrar</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          {/* <div className='col'></div> */}
+        </div>
+        <div></div>
       </div>
     </>
   )
 }
+// <div className='row border bg-navbar w-100'>
+//   <div className='col border col-sm-12'>
+//     <img src={require("../../assets/logo.png")} style={{ height: 55 }} />
+//     <label for="exampleInputEmail1 text-left ">Endereço de email</label>
+//     <input type="email" placeholder="E-mail"
+//       className="form-control form-control-sm"
+//       value={email}
+//       onChange={(e) => setEmail(e.target.value)} />
+//   </div>
+// </div>
+// <div className='row border justify-content-between bg'>
+//   <div className='col border col-sm-12'>lateral</div>
+//   <div className='col border col-8'>meio</div>
+// </div>
+
+// <Menu />
