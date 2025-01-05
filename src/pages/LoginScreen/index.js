@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import "./styles.css"
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import api from '../../constants/api';
+import { AuthContext } from '../../context/auth';
 
 
 export default function LoginScreen() {
@@ -12,8 +13,10 @@ export default function LoginScreen() {
   // const [password2, setPassword2] = useState("");
   const [msg, setMsg] = useState("");
   const [showPpass, setShowPass] = useState("password");
+  const {setUser} = useContext(AuthContext);
 
-  async function HandleLogin() {
+  async function HandleLogin(e) {
+    e.preventDefault();
     setMsg("");
     try {
       const response = await api.post("/users/login", {
@@ -22,13 +25,13 @@ export default function LoginScreen() {
       });
       if (response.data) {
         // Armazenar os dados da response em variáveis - "sessionToken, sessionId..."
-        localStorage.setItem("sessionToken", response.data.token);
         localStorage.setItem("sessionId", response.data.id_admin);
+        localStorage.setItem("sessionToken", response.data.token);
         localStorage.setItem("sessionEmail", response.data.email);
         localStorage.setItem("sessionName", response.data.name);
         api.defaults.headers.common['authorization'] = "Bearer " + response.data.token;
-        navigate("/home")
-        msg("Olá")
+        setUser(response.data);                
+        navigate("/home");        
       } else {
         console.log(response);
       }
@@ -59,8 +62,8 @@ export default function LoginScreen() {
         localStorage.setItem("sessionEmail", email);
         localStorage.setItem("sessionName", name);
         api.defaults.headers.common['authorization'] = "Bearer " + response.data.token;
+        setUser(response.data);
         navigate("/home");
-
       } else {
         setMsg("Erro ao criar conta. Tente novamente mais tarde.");
       }
