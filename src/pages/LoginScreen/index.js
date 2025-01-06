@@ -32,6 +32,12 @@ export default function LoginScreen() {
         alert("Error")
         console.log(error);
       }
+      else{
+        localStorage.setItem("sessionUserEmail", email)
+        localStorage.setItem("sessionUserPass", password)
+        sessionStorage.setItem("sessionUserEmail", email)
+        sessionStorage.setItem("sessionUserPass", password)
+      }
       if (response.data) {
         // Armazenar os dados da response em variáveis - "sessionToken, sessionId..."
 

@@ -29,3 +29,24 @@
     background-color: rgba(75, 108, 255, 0.4);
     /* height: 90vh; */
   }
+  .text-area-style{    
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding:5px 12px;
+    width: 40vw;
+    margin-left: 15px;
+    resize: none;
+    border-radius: 12px;
+  }
+  .input-post{
+    border-radius: 12px;
+    background-color: #d1d1d1;
+    border: 0;
+    color: #595252;
+    font-size: 18px;
+  }
+  .row-create-post{
+    margin: 13px 5px;
+    border-radius: 12px;
+  }
