@@ -3,17 +3,18 @@ import "./styles.css"
 import { Navigate, useNavigate } from 'react-router-dom';
 import api from '../../constants/api';
 import { AuthContext } from '../../context/auth';
-
+import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import { supabase } from '../../App';
 
 export default function LoginScreen() {
   const navigate = useNavigate()
-  const [name, setName] = useState()
-  const [email, setEmail] = useState()
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   // const [password2, setPassword2] = useState("");
   const [msg, setMsg] = useState("");
   const [showPpass, setShowPass] = useState("password");
-  const {setUser} = useContext(AuthContext);
+  const { setUser } = useContext(AuthContext);
 
   async function HandleLogin(e) {
     e.preventDefault();
@@ -23,17 +24,32 @@ export default function LoginScreen() {
         email,
         password
       });
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
+      if (error) {
+        alert("Error")
+        console.log(error);
+      }
       if (response.data) {
         // Armazenar os dados da response em variáveis - "sessionToken, sessionId..."
-        localStorage.setItem("sessionId", response.data.id_admin);
+
+        localStorage.setItem("sessionId", response.data.id_user);
         localStorage.setItem("sessionToken", response.data.token);
         localStorage.setItem("sessionEmail", response.data.email);
         localStorage.setItem("sessionName", response.data.name);
+        sessionStorage.setItem("sessionId", response.data.id_user);
+        sessionStorage.setItem("sessionToken", response.data.token);
+        sessionStorage.setItem("sessionEmail", response.data.email);
+        sessionStorage.setItem("sessionName", response.data.name);
         api.defaults.headers.common['authorization'] = "Bearer " + response.data.token;
-        setUser(response.data);                
-        navigate("/home");        
+       
+        setUser(response.data);
+        // console.log(response.data);
+        navigate("/home");
       } else {
-        console.log(response);
+        console.log(response.data);
       }
     } catch (error) {
       if (error.response?.data.error) {
@@ -54,14 +70,22 @@ export default function LoginScreen() {
         email,
         password
       });
-
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+      })
+      if (error) {
+        alert("Error")
+        console.log(error);
+      }
       if (response.data) {
-         // Armazenar os dados da response em variáveis - "sessionToken, sessionId..."
+        // Armazenar os dados da response em variáveis - "sessionToken, sessionId..."
         localStorage.setItem("sessionToken", response.data.token);
         localStorage.setItem("sessionId", response.data.id_admin);
         localStorage.setItem("sessionEmail", email);
         localStorage.setItem("sessionName", name);
         api.defaults.headers.common['authorization'] = "Bearer " + response.data.token;
+      
         setUser(response.data);
         navigate("/home");
       } else {
@@ -78,7 +102,7 @@ export default function LoginScreen() {
   }
   return (
     <>
-      <div className="container-fluid bg">        
+      <div className="container-fluid bg">
         <div className='row bg-navbar d-flex align-items-center'>
           <img src={require("../../assets/logo.png")} alt="Anama" className='logo-login' />
           <section className='row'>

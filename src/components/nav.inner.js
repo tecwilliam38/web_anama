@@ -6,16 +6,24 @@ import { GoHomeFill } from "react-icons/go";
 import { MdOutlineGroups2 } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import api from '../constants/api';
+import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import { supabase } from '../App';
 
 export default function NavInner() {
     const navigate = useNavigate();
+    
 
     function Logout() {
         localStorage.removeItem("sessionToken");
         localStorage.removeItem("sessionId");
         localStorage.removeItem("sessionEmail");
         localStorage.removeItem("sessionName");
+        sessionStorage.removeItem("sessionToken");
+        sessionStorage.removeItem("sessionId");
+        sessionStorage.removeItem("sessionEmail");
+        sessionStorage.removeItem("sessionName");
         api.defaults.headers.common['authorization'] = "";
+        const { error } = supabase.auth.signOut()
         navigate("/");
     }
     return (
