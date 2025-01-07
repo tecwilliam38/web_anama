@@ -29,6 +29,12 @@
     background-color: rgba(75, 108, 255, 0.4);
     /* height: 90vh; */
   }
+  /* input[type="file"] {
+    display: none;
+}
+FaRegImages{
+  cursor: pointer;
+} */
   .text-area-style{    
     overflow: hidden;
     text-overflow: ellipsis;

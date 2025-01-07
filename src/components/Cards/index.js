@@ -4,21 +4,19 @@ import "./style.css"
 export default function HeaderScreen(props) {
     const imagesUser = props.imageURL;
     console.log(imagesUser.data);
-    
+
     return (
         <>
-                <div className='col' key={props.urlKey}>
-                    <div className="card-group" >
-                        <div className="card">
-                            <img className="card-img-top card-post" src={props.imageURL} alt="Imagem de capa do card" />
-                            <div className="card-body">
-                                {/* <h5 className="card-title">Título do card</h5>                                 */}
-                                {/* <p className="card-text"><small className="text-muted">Atualizados 3 minutos atrás</small></p> */}
-                                <button type="button" className="btn btn-danger btn-block rounded" onClick={() => props.onClick(props.image)}>Excluir foto</button>
-                            </div>
+            <div className='col col-12 col-sm-4'  key={props.urlKey}>
+                <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img class="d-block card-imageUsers" src={props.imageURL} alt="Primeiro Slide" />
+                            <button type="button" className="btn btn-danger btn-block rounded" onClick={() => props.onClick(props.image)}>Excluir foto</button>
                         </div>
                     </div>
                 </div>
+            </div>
         </>
     )
 }

@@ -22,6 +22,8 @@ export default function NavInner() {
         sessionStorage.removeItem("sessionId");
         sessionStorage.removeItem("sessionEmail");
         sessionStorage.removeItem("sessionName");
+        localStorage.removeItem("sessionUserEmail");
+        localStorage.removeItem("sessionUserPass");
         api.defaults.headers.common['authorization'] = "";
         const { error } = supabase.auth.signOut()
         navigate("/");

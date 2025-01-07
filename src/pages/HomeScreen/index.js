@@ -35,12 +35,18 @@ export default function HomeScreen() {
     }
   }
 
+  const [selectImage, setSelectecImage] = useState([]);
+
+  // async function selectImage(e) {
+  //   e.preventDefault();
+  //   const file = e.target.files[0];
+  //   return file;
+  // }
+
   async function uploadImage(e) {
-    // e.preventDefault();
-    let file = e.target.files[0];
-    //  Armazenar a foto no supabase:
+    //  Armazenar a foto no supabase:    
     const { data, error } = await supabase.storage.from('user_images')
-      .upload(usuarioLogado.id + "/" + uuidv4(), file)
+      .upload(usuarioLogado.id + "/" + uuidv4(), selectImage)
     if (data) {
       getImages();
     } else {
@@ -52,7 +58,7 @@ export default function HomeScreen() {
     if (usuarioLogado) {
       getImages();
     }
-  }, [usuarioLogado])
+  }, [usuarioLogado, uploadImage])
 
   // https://kpcanhcozznqvfibklhd.supabase.co/storage/v1/object/public/user_images/496443ad-44d9-4d87-8d45-3f222d585ea2/19d275a1-15f5-4640-a052-ac3469cb8c4c
   async function deleteImage(imageName) {
@@ -131,16 +137,15 @@ export default function HomeScreen() {
                   <hr />
                   <div className='row container justify-content-around d-flex align-items-center my-3'>
                     <MdOutlineGroups2 size={40} />
-
-                      <FaRegImages size={40} />
-                    <input type="file" accept="image/png, image/jpeg" onChange={(e) => uploadImage(e)}/>
-                    
-                    <p>Adicione uma foto</p>
+                    <div className='col'>
+                      <FaRegImages for="select-file" size={40} placeholder="Pesquisar" type="button" data-toggle="modal" data-target="#modalSelect-file" />
+                      <p>Adicione uma foto</p>
+                    </div>
 
                     <MdOutlineGroups2 size={40} />
                   </div>
                 </div>
-                <div className='row'>
+                <div className='row d-flex justify-content-around'>
                   {userImages.map((image) => {
                     return (
                       <>
@@ -152,31 +157,61 @@ export default function HomeScreen() {
                       </>
                     )
                   })}
-                  <div class="modal fade" id="createPostModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalLabel">Título do modal</h5>
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-                        </div>
-                        <div class="modal-body">
-                          ...
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                          <button type="button" class="btn btn-primary">Salvar mudanças</button>
-                        </div>
+                </div>
+
+
+                {/* Modal */}
+                <div className="modal fade" id="createPostModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div className="modal-dialog" role="document">
+                    <div className="modal-content">
+                      <div className="modal-header text-center">
+                        <h5 className="modal-title" id="exampleModalLabel">Criar Post</h5>
+                        <button type="button" className="close" data-dismiss="modal" aria-label="Fechar">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div className="modal-body">
+                        ...
+                        <div className='col'>
+                      <FaRegImages for="select-file" size={40} placeholder="Pesquisar" type="button" data-toggle="modal" data-target="#modalSelect-file" />
+                      <p>Adicione uma foto</p>
+                    </div>
+                        {/* <input type="file" accept="image/png, image/jpeg" onChange={(e) => setSelectecImage(e.target.files[0])} /> */}
+                      </div>
+                      <div className="modal-footer">
+                        <button type="button" className="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <button type="button" className="btn btn-primary">Salvar mudanças</button>
                       </div>
                     </div>
                   </div>
-
                 </div>
               </>
             }
           </div>
           <div className='col col-12 col-lg-3 text-center col-right'>coluna 3</div>
+
+          {/* Modal image */}
+
+          <div class="modal fade" id="modalSelect-file" tabindex="-1" role="dialog" aria-labelledby="modalSelect-file" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Escolha um arquivo</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <input type="file" accept="image/png, image/jpeg" onChange={(e) => setSelectecImage(e.target.files[0])} placeholder='William'/>
+                  ...
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                  <button type="submit" class="btn btn-primary" data-dismiss="modal" onClick={()=>uploadImage()} >Enviar foto</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </section >
       </div >
     </>
