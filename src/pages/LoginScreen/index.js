@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import "./styles.css"
 import { Navigate, useNavigate } from 'react-router-dom';
 import api from '../../constants/api';
-import { AuthContext } from '../../context/auth';
+import { AuthContext, useAuth } from '../../context/auth';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { supabase } from '../../App';
 
@@ -14,7 +14,7 @@ export default function LoginScreen() {
   // const [password2, setPassword2] = useState("");
   const [msg, setMsg] = useState("");
   const [showPpass, setShowPass] = useState("password");
-  const { setUser } = useContext(AuthContext);
+  const {login, setUser} = useAuth()
 
   async function HandleLogin(e) {
     e.preventDefault();
@@ -41,14 +41,11 @@ export default function LoginScreen() {
       if (response.data) {
         // Armazenar os dados da response em variáveis - "sessionToken, sessionId..."
 
+        window.localStorage.setItem("loggedIn", true);
         localStorage.setItem("sessionId", response.data.id_user);
         localStorage.setItem("sessionToken", response.data.token);
         localStorage.setItem("sessionEmail", response.data.email);
-        localStorage.setItem("sessionName", response.data.name);
-        sessionStorage.setItem("sessionId", response.data.id_user);
-        sessionStorage.setItem("sessionToken", response.data.token);
-        sessionStorage.setItem("sessionEmail", response.data.email);
-        sessionStorage.setItem("sessionName", response.data.name);
+        localStorage.setItem("sessionName", response.data.name);       
         api.defaults.headers.common['authorization'] = "Bearer " + response.data.token;
        
         setUser(response.data);
@@ -67,7 +64,6 @@ export default function LoginScreen() {
 
     }
   }
-
   async function HandleRegister() {
     setMsg("");
     try {
@@ -86,8 +82,10 @@ export default function LoginScreen() {
       }
       if (response.data) {
         // Armazenar os dados da response em variáveis - "sessionToken, sessionId..."
+        window.localStorage.setItem("loggedIn", true);
         localStorage.setItem("sessionToken", response.data.token);
-        localStorage.setItem("sessionId", response.data.id_admin);
+        localStorage.setItem("sessionId", response.data.id_user);
+        // localStorage.setItem("sessionId", response.data.id_admin);
         localStorage.setItem("sessionEmail", email);
         localStorage.setItem("sessionName", name);
         api.defaults.headers.common['authorization'] = "Bearer " + response.data.token;
