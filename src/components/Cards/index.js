@@ -2,8 +2,7 @@ import React from 'react'
 import "./style.css"
 
 export default function HeaderScreen(props) {
-    const imagesUser = props.imageURL;
-    console.log(imagesUser.data);
+        
 
     return (
         <>
