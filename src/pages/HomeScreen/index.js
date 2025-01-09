@@ -54,7 +54,10 @@ export default function HomeScreen() {
     if (usuarioLogado) {
       getImages();
     }
-  }, [usuarioLogado, uploadImage])
+    else{
+      
+    }
+  }, [uploadImage])
 
   // https://kpcanhcozznqvfibklhd.supabase.co/storage/v1/object/public/user_images/496443ad-44d9-4d87-8d45-3f222d585ea2/19d275a1-15f5-4640-a052-ac3469cb8c4c
   async function deleteImage(imageName) {

@@ -41,7 +41,7 @@ export default function LoginScreen() {
       if (response.data) {
         // Armazenar os dados da response em variáveis - "sessionToken, sessionId..."
 
-        window.localStorage.setItem("loggedIn", true);
+        window.localStorage.setItem("isLoggedIn", "true");
         localStorage.setItem("sessionId", response.data.id_user);
         localStorage.setItem("sessionToken", response.data.token);
         localStorage.setItem("sessionEmail", response.data.email);
@@ -82,7 +82,7 @@ export default function LoginScreen() {
       }
       if (response.data) {
         // Armazenar os dados da response em variáveis - "sessionToken, sessionId..."
-        window.localStorage.setItem("loggedIn", true);
+        window.localStorage.setItem("isLoggedIn", "true");
         localStorage.setItem("sessionToken", response.data.token);
         localStorage.setItem("sessionId", response.data.id_user);
         // localStorage.setItem("sessionId", response.data.id_admin);
@@ -107,7 +107,7 @@ export default function LoginScreen() {
   return (
     <>
       <div className="container-fluid bg">
-        <div className='row bg-navbar d-flex align-items-center'>
+        <div className='row bg-navbar d-flex justify-content-around align-items-center'>
           <img src={require("../../assets/logo.png")} alt="Anama" className='logo-login' />
           <section className='row'>
             <article className='col-11 col-sm-5 mx-auto mx-lg-0 my-1'>

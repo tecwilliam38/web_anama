@@ -3,7 +3,7 @@ import LoginScreen from './pages/LoginScreen';
 import HomeScreen from './pages/HomeScreen';
 import { AuthProvider, useAuth } from "./context/auth";
 // import {PrivateRoute} from "./context/privateRoute";
-import { SessionContextProvider } from "@supabase/auth-helpers-react";
+import { SessionContextProvider, useUser } from "@supabase/auth-helpers-react";
 import { createClient } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 import { PrivateRoute } from "./context/privateRoute";
@@ -14,13 +14,22 @@ const SUPABASEAPIKEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmF
 export const supabase = createClient(SUPABASEURL, SUPABASEAPIKEY);
 
 function App({ children }) {
+    const usuarioLogado = useUser();
     const { isAuthenticated } = useAuth();
-    const [isLoggedIn, setIsloggedIn] = useState(null);
+    // const [isLoggedIn, setIsloggedIn] = useState(null);
     useEffect(() => {
-        const response = localStorage.getItem("loggedIn");
-        setIsloggedIn(response);     
-        return;   
-    }, [])
+        // const response = localStorage.getItem("loggedIn");
+        // setIsloggedIn(response);
+        // console.log(isLoggedIn);
+        PrivateRoute();
+        return;
+    }, [usuarioLogado])
+
+
+    const userToken = localStorage.getItem('isLoggedIn'); // ou sessionStorage
+    console.log(userToken);
+
+
 
     return (
         <>
@@ -28,25 +37,14 @@ function App({ children }) {
                 <SessionContextProvider supabaseClient={supabase}>
                     <Router>
                         <Routes>
-                            <Route path="/" element={<LoginScreen />} />
-                            {/* <Route path="/" element={isAuthenticated ? <Navigate to="/home" /> : <LoginScreen />} /> */}
-                            <Route path="/login" element={<LoginScreen />} />
-
-                            {/* <Route
-                                path="/home"
-                                element={
-                                    <PrivateRoute>
-                                        <HomeScreen />
-                                    </PrivateRoute>}
-                            /> */}
-                            {isLoggedIn ?
-                                <Route path="/home" element={<HomeScreen />} />
+                            <Route path="/" element={userToken === "true" ?
+                                <HomeScreen />
                                 :
-                                <Route path="/" element={<LoginScreen />}  />
-                            }
-                            {/* <Route element={<PrivateRoute />}>
-                            </Route> */}
-
+                                <LoginScreen />
+                            } />                            
+                            <Route path="/login" element={<LoginScreen />} />
+                            {/* <Route path="/" element={userToken === "true" ? <HomeScreen /> : <LoginScreen />} /> */}
+                            <Route path="/home" element={<HomeScreen />} />
                         </Routes>
                     </Router>
                 </SessionContextProvider>

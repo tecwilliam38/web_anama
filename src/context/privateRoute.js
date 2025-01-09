@@ -11,6 +11,6 @@ import { useAuth } from './auth';
 // }
 
 export function PrivateRoute() {
-    const isLoggedIn = window.localStorage.getItem("loggedIn");
+    const isLoggedIn = localStorage.getItem("loggedIn");
     return isLoggedIn === "true" ? <Navigate to="/home"/>: <Navigate to="/"/>;
 }
