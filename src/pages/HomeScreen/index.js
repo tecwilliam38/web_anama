@@ -10,13 +10,17 @@ import { useUser } from '@supabase/auth-helpers-react';
 import { supabase } from '../../App';
 import { v4 as uuidv4 } from "uuid";
 import SideMenu from '../../components/sideMenu';
+import api from '../../constants/api';
+import { useNavigate } from 'react-router-dom';
 
 
 
 
 export default function HomeScreen() {
+  const navigate = useNavigate();
   const usuarioLogado = useUser();
   const [userImages, setUserImages] = useState([]);
+  const [file, setFile] = useState([]);
   const [userMsg, setUsermsg] = useState("No que você está pensando?");
   // console.log("Usuario id:",usuarioLogado.id);
 
@@ -36,6 +40,22 @@ export default function HomeScreen() {
       console.log(error);
     }
   }
+  async function getProfile() {
+    const { data, error } = await supabase
+      .storage
+      .from('user_profile')
+      .list(usuarioLogado?.id + "/", {
+        limit: 100,
+        offset: 0,
+        sortBy: { column: "name", order: "asc" }
+      });
+    if (data !== null) {
+      setFile(data);
+    } else {
+      alert("Erro de leitura de imagens");
+      console.log(error);
+    }
+  }
 
   const [selectImage, setSelectecImage] = useState([]);
 
@@ -49,14 +69,15 @@ export default function HomeScreen() {
       console.log("imagens não encontradas", error);
     }
   }
-  
+
 
   useEffect(() => {
     if (usuarioLogado) {
       getImages();
+      getProfile();
     }
-    else{
-      
+    else {
+
     }
   }, [uploadImage])
 
@@ -82,7 +103,12 @@ export default function HomeScreen() {
     slidesToScroll: 1,
   };
 
-
+  function Logout() {
+    // api.defaults.headers.common['authorization'] = "";
+    // localStorage.clear()
+    // const { error } = supabase.auth.signOut()
+    // navigate("/");
+  }
   const CDNURL = "https://kpcanhcozznqvfibklhd.supabase.co/storage/v1/object/public/user_images/";
 
   return (
@@ -90,7 +116,7 @@ export default function HomeScreen() {
       <div className='continer-fluid'>
         <NavInner />
         <section className='row d-flex justify-content-around align-items-start bg-body'>
-         <SideMenu/>
+          <SideMenu />
           <div className='col col-12 col-lg-6 text-center'>
             {!usuarioLogado ?
               ""
@@ -127,48 +153,59 @@ export default function HomeScreen() {
 
               </>
             }
-                <div className='row d-flex justify-content-around'>
-                  {userImages.map((image) => {
-                    return (
-                      <>
-                        <HeaderScreen
-                          urlKey={CDNURL + usuarioLogado.id + "/" + image.name}
-                          image={image.name}
-                          imageURL={CDNURL + usuarioLogado.id + "/" + image.name}
-                          onClick={deleteImage} />
-                      </>
-                    )
-                  })}
-                </div>
+            <div className='row d-flex justify-content-around'>
+              {userImages.map((image) => {
+                return (
+                  <>
+                    <HeaderScreen
+                      urlKey={CDNURL + usuarioLogado.id + "/" + image.name}
+                      image={image.name}
+                      imageURL={CDNURL + usuarioLogado.id + "/" + image.name}
+                      onClick={deleteImage} />
+                  </>
+                )
+              })}
+            </div>
 
 
-                {/* Modal */}
-                <div className="modal fade" id="createPostModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div className="modal-dialog" role="document">
-                    <div className="modal-content">
-                      <div className="modal-header text-center">
-                        <h5 className="modal-title" id="exampleModalLabel">Criar Post</h5>
-                        <button type="button" className="close" data-dismiss="modal" aria-label="Fechar">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div className="modal-body">
-                        ...
-                        <div className='col'>
-                          <FaRegImages for="select-file" size={40} placeholder="Pesquisar" type="button" data-toggle="modal" data-target="#modalSelect-file" />
-                          <p>Adicione uma foto</p>
-                        </div>
-                        {/* <input type="file" accept="image/png, image/jpeg" onChange={(e) => setSelectecImage(e.target.files[0])} /> */}
-                      </div>
-                      <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                        <button type="button" className="btn btn-primary">Salvar mudanças</button>
-                      </div>
+            {/* Modal */}
+            <div className="modal fade" id="createPostModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div className="modal-dialog" role="document">
+                <div className="modal-content">
+                  <div className="modal-header text-center">
+                    <h5 className="modal-title" id="exampleModalLabel">Criar Post</h5>
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Fechar">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div className="modal-body">
+                    ...
+                    <div className='col'>
+                      <FaRegImages for="select-file" size={40} placeholder="Pesquisar" type="button" data-toggle="modal" data-target="#modalSelect-file" />
+                      <p>Adicione uma foto</p>
                     </div>
+                    {/* <input type="file" accept="image/png, image/jpeg" onChange={(e) => setSelectecImage(e.target.files[0])} /> */}
+                  </div>
+                  <div className="modal-footer">
+                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="button" className="btn btn-primary">Salvar mudanças</button>
                   </div>
                 </div>
+              </div>
+            </div>
           </div>
-          <div className='col col-12 col-lg-3 text-center col-right'>coluna 3</div>
+          <div className='col col-12 col-lg-3 text-center col-right'>coluna 3
+            <button type="button" onClick={Logout()}>
+              Logout
+            </button>
+            {file.map((profile) => {
+              return (
+                <>
+                  <img src={CDNURL + usuarioLogado.id+"/"+profile.name} className='card-img-top'/>
+                </>
+              )
+            })}
+          </div>
 
           {/* Modal image */}
 
