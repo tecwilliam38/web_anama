@@ -49,6 +49,7 @@ export default function HomeScreen() {
       console.log("imagens não encontradas", error);
     }
   }
+  
 
   useEffect(() => {
     if (usuarioLogado) {

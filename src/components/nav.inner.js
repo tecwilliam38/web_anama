@@ -13,17 +13,7 @@ export default function NavInner() {
     const navigate = useNavigate();
     
 
-    function Logout() {
-        // localStorage.removeItem("sessionToken");
-        // localStorage.removeItem("sessionId");
-        // localStorage.removeItem("sessionEmail");
-        // localStorage.removeItem("sessionName");
-        // sessionStorage.removeItem("sessionToken");
-        // sessionStorage.removeItem("sessionId");
-        // sessionStorage.removeItem("sessionEmail");
-        // sessionStorage.removeItem("sessionName");
-        // localStorage.removeItem("sessionUserEmail");
-        // localStorage.removeItem("sessionUserPass");
+    function Logout() {      
         api.defaults.headers.common['authorization'] = "";
         localStorage.clear()
         const { error } = supabase.auth.signOut()
