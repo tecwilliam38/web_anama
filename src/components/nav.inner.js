@@ -29,8 +29,11 @@ export default function NavInner() {
             .from("user_profile")
             .upload(usuarioLogado.id + "/profile" + uuidv4(), selectImage)
             if(data){
-                
-            }
+                getProfile();
+                alert("foto Enviada")
+            }else {
+                console.log("imagens não encontradas", error);
+                alert("foto não enviada")}
     }
 
     async function uploadProfile(e) {
@@ -167,7 +170,8 @@ export default function NavInner() {
                                                     />
                                                 </>
                                             )
-                                        })}
+                                        }
+                                        )}
                                     </a>
                                     <div className="dropdown-menu mr-3" aria-labelledby="navbarDropdown">
                                         <a className="dropdown-item" href="#">Ação</a>
