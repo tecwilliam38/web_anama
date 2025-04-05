@@ -27,7 +27,7 @@ export default function NavInner() {
         const { data, error } = await supabase
             .storage
             .from("user_profile")
-            .upload(usuarioLogado.id + "/profile" + uuidv4(), selectImage)
+            .upload(usuarioLogado.id + "/" + uuidv4(), selectImage)
             if(data){
                 getProfile();
                 alert("foto Enviada")
