@@ -17,11 +17,11 @@
     background-size: contain;
 }
 .card-imageProfile{
-    max-width:70px;
-    max-height:70px;
+    max-width:55px;
+    max-height:55px;
     width: 70px;
     height: 70px;
-    background-size: contain;
+    background-size: cover;
     border-radius: 50%;
     object-fit: fill;
 

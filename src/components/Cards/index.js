@@ -1,6 +1,8 @@
 import React from 'react'
 import "./style.css"
 
+import { FaTrashAlt } from "react-icons/fa";
+
 export default function HeaderScreen(props) {
         
 
@@ -12,7 +14,8 @@ export default function HeaderScreen(props) {
                         <div className="carousel-item active">
                             {/* <img className="d-block card-profile" src={props.imageURL} alt="Primeiro Slide" /> */}
                             <img className="d-block card-imageUsers" src={props.imageURL} alt="Primeiro Slide" />
-                            <button type="button" className="btn btn-danger btn-block rounded" onClick={() => props.onClick(props.image)}>Excluir foto</button>
+                            <button type="button" className="btn btn-danger btn-block rounded mt-1 d-flex justify-content-around" onClick={() => props.onClick(props.image)}>
+                                Excluir foto <FaTrashAlt size={20} /></button>
                         </div>
                     </div>
                 </div>
