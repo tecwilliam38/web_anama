@@ -23,13 +23,26 @@ export default function NavInner() {
     const handleFileChange = (e) => {
         setSelectedImage(e.target.files[0]);
     };
+    async function deleteImage(imageName) {
+        const { error } = await supabase
+            .storage
+            .from('profile')
+            .remove([usuarioLogado.id + "/" + imageName])
+
+        if (error) {
+            alert(error);
+        } else {
+            getProfile();
+        }
+    }
     //  Armazenar a foto de perfil no supabase:   
     async function uploadProfile() {
+        // deleteImage();
         const { data, error } = await supabase.storage.from('profile')
             .upload(usuarioLogado.id + "/" + uuidv4(), selectImage)
         if (data) {
             getProfile();
-            alert("foto Enviada")
+            // alert("foto Enviada")
         } else {
             console.log("imagens não encontradas", error);
             // alert("foto não enviada")
@@ -39,14 +52,12 @@ export default function NavInner() {
         const { data, error } = await supabase
             .storage.from('profile')
             .list(usuarioLogado?.id + "/", {
-                limit: 100,
+                limit: 10,
                 offset: 0,
                 sortBy: { column: "name", order: "asc" }
             });
         if (data !== null) {
-            console.log('foto de perfil:'+data);
-            
-             setUserProfile(data);
+            setUserProfile(data);
         } else {
             alert("Erro de leitura de imagens");
             console.log(error);
@@ -58,18 +69,7 @@ export default function NavInner() {
 
     }, [])
 
-    async function deleteImage(imageName) {
-        const { error } = await supabase
-            .storage
-            .from('user_profile')
-            .remove([usuarioLogado.id + "/" + imageName])
-
-        if (error) {
-            alert(error);
-        } else {
-            getProfile();
-        }
-    }
+    
 
     const settings = {
         dots: true,
@@ -140,9 +140,9 @@ export default function NavInner() {
                                             return (
                                                 <>
                                                     <img src={CDNURL + usuarioLogado.id + "/" + profile.name}
-                                    className='card-imageProfile'
+                                                        className='card-imageProfile'
                                                     />
-                                                    
+
                                                 </>
                                             )
                                         }
@@ -150,12 +150,17 @@ export default function NavInner() {
                                     </a>
                                     <div className="dropdown-menu mr-3" aria-labelledby="navbarDropdown">
                                         <a className="dropdown-item" href="#">Ação</a>
+                                        {/* {userProfile === null ? */}
                                         <a
                                             className="dropdown-item" for="select-file"
                                             size={40} placeholder="Pesquisar" type="button"
                                             data-toggle="modal" data-target="#modalSelect-profile">
                                             Alterar foto do perfil
                                         </a>
+                                        {/* :
+                                       <></>
+                                       } */}
+
                                         <div className="dropdown-divider"></div>
                                         <a className="dropdown-item" href="#">Algo mais aqui</a>
                                         <button type='button' className="btn btn-primary btn-block" onClick={Logout}>Sair</button>
