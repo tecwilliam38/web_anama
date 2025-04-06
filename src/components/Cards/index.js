@@ -10,7 +10,8 @@ export default function HeaderScreen(props) {
                 <div id="carouselExampleSlidesOnly" className="carousel slide" data-ride="carousel">
                     <div className="carousel-inner">
                         <div className="carousel-item active">
-                            <img className="d-block card-imageUsers" src={props.imageURL} alt="Primeiro Slide" />
+                            <img className="d-block card-profile" src={props.imageURL} alt="Primeiro Slide" />
+                            {/* <img className="d-block card-imageUsers" src={props.imageURL} alt="Primeiro Slide" /> */}
                             <button type="button" className="btn btn-danger btn-block rounded" onClick={() => props.onClick(props.image)}>Excluir foto</button>
                         </div>
                     </div>

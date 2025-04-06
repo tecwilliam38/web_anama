@@ -8,3 +8,8 @@
     position: absolute;
     width: 100vw;    
 }
+
+.card-imageProfile{
+  width: 20px;
+  height: 50px;
+}

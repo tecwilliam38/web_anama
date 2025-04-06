@@ -19,48 +19,34 @@ export default function NavInner() {
 
     const [selectImage, setSelectedImage] = useState([]);
 
+
     const handleFileChange = (e) => {
         setSelectedImage(e.target.files[0]);
     };
-    const handleUpload = async () => {
-        if (!selectImage) return;
-        const { data, error } = await supabase
-            .storage
-            .from("user_profile")
-            .upload(usuarioLogado.id + "/" + uuidv4(), selectImage)
-            if(data){
-                getProfile();
-                alert("foto Enviada")
-            }else {
-                console.log("imagens não encontradas", error);
-                alert("foto não enviada")}
-    }
-
-    async function uploadProfile(e) {
-        //  Armazenar a foto no supabase:    
-
-        const { data, error } = await supabase.storage.from('user_profile')
+    //  Armazenar a foto de perfil no supabase:   
+    async function uploadProfile() {
+        const { data, error } = await supabase.storage.from('profile')
             .upload(usuarioLogado.id + "/" + uuidv4(), selectImage)
         if (data) {
             getProfile();
             alert("foto Enviada")
         } else {
             console.log("imagens não encontradas", error);
-            alert("foto não enviada")
+            // alert("foto não enviada")
         }
     }
-
     async function getProfile() {
         const { data, error } = await supabase
-            .storage
-            .from('user_profile')
+            .storage.from('profile')
             .list(usuarioLogado?.id + "/", {
                 limit: 100,
                 offset: 0,
                 sortBy: { column: "name", order: "asc" }
             });
         if (data !== null) {
-            setUserProfile(data);
+            console.log('foto de perfil:'+data);
+            
+             setUserProfile(data);
         } else {
             alert("Erro de leitura de imagens");
             console.log(error);
@@ -68,13 +54,9 @@ export default function NavInner() {
     }
 
     useEffect(() => {
-        // if (usuarioLogado !== null) {
-        //     return;   
-        // }
         getProfile();
 
     }, [])
-    //   console.log("email do usuário",usuarioLogado.email);
 
     async function deleteImage(imageName) {
         const { error } = await supabase
@@ -97,14 +79,7 @@ export default function NavInner() {
         slidesToScroll: 1,
     };
 
-
-    const CDNURL = "https://kpcanhcozznqvfibklhd.supabase.co/storage/v1/object/public/user_images/";
-
-
-
-
-
-
+    const CDNURL = "https://kpcanhcozznqvfibklhd.supabase.co/storage/v1/object/public/profile/";
 
     function Logout() {
         api.defaults.headers.common['authorization'] = "";
@@ -164,10 +139,10 @@ export default function NavInner() {
                                         {userProfile?.map((profile) => {
                                             return (
                                                 <>
-                                                    <img
-                                                        src={CDNURL + usuarioLogado.id + "/" + profile.name}
-                                                        style={{ width: 50, height: 50, borderRadius: 30, resize: "cover" }}
+                                                    <img src={CDNURL + usuarioLogado.id + "/" + profile.name}
+                                    className='card-imageProfile'
                                                     />
+                                                    
                                                 </>
                                             )
                                         }
@@ -205,7 +180,7 @@ export default function NavInner() {
                                     </div>
                                     <div className="modal-footer">
                                         <button type="button" className="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                                        <button type="submit" className="btn btn-primary" data-dismiss="modal" onClick={handleUpload} >Enviar foto</button>
+                                        <button type="submit" className="btn btn-primary" data-dismiss="modal" onClick={uploadProfile} >Enviar foto</button>
                                     </div>
                                 </div>
                             </div>

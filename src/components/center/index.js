@@ -10,13 +10,12 @@ export default function CenterScreen() {
     const usuarioLogado = useUser();
     const [selectImage, setSelectecImage] = useState([]);
     const [userImages, setUserImages] = useState([]);
-    // console.log(usuarioLogado);
-
 
     async function uploadImage() {
         //  Armazenar a foto no supabase:    
         const { data, error } = await supabase.storage.from('user_images')
             .upload(usuarioLogado.id + "/files" + uuidv4(), selectImage)
+            setSelectecImage([])
         if (data) {
             getImages();
         } else {
@@ -34,6 +33,8 @@ export default function CenterScreen() {
                 sortBy: { column: "name", order: "asc" }
             });
         if (data !== null) {
+            // console.log("fotos postagens:"+data);
+            
             setUserImages(data);
         } else {
             alert("Erro de leitura de imagens");
@@ -58,9 +59,11 @@ export default function CenterScreen() {
     useEffect(() => {
         if (usuarioLogado) {
             getImages();
-        }
+        };
+        
     }, [])
-
+    const username = localStorage.getItem("sessionName")
+    
     const CDNURL = "https://kpcanhcozznqvfibklhd.supabase.co/storage/v1/object/public/user_images/";
 
     return (
@@ -79,12 +82,13 @@ export default function CenterScreen() {
                                     />
                                 </div>
                                 <div className='col mx-2'>
-                                    <input
+                                No que você está pensando <p className="h5">{username}</p>
+                                    {/* <input
                                         type="text"
                                         className="form-control input-post"
                                         data-toggle="modal" data-target="#createPostModal"
-                                        value={"No que você está pensando " + localStorage.getItem("sessionName")}
-                                        readonly />
+                                        value={ username}
+                                        readonly /> */}
                                 </div>
                             </div>
                             <hr />
