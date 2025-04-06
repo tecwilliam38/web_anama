@@ -21,7 +21,7 @@
     max-height:70px;
     width: 70px;
     height: 70px;
-    background-size: cover;
+    background-size: contain;
     border-radius: 50%;
     object-fit: fill;
 
