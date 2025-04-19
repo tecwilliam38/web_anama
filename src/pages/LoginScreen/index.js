@@ -18,7 +18,8 @@ export default function LoginScreen() {
   const {login, setUser} = useAuth()
 
 
-  async function HandleRegister() {
+  async function HandleRegister(e) {
+    e.preventDefault();
     setMsg("");
     try {
       const response = await api.post("/users/register", {
@@ -39,9 +40,14 @@ export default function LoginScreen() {
         window.localStorage.setItem("isLoggedIn", "true");
         localStorage.setItem("sessionToken", response.data.token);
         localStorage.setItem("sessionId", response.data.id_user);
-        // localStorage.setItem("sessionId", response.data.id_admin);
         localStorage.setItem("sessionEmail", email);
         localStorage.setItem("sessionName", name);
+        
+        
+        sessionStorage.setItem("sessionUserToken", response.data.token);
+        sessionStorage.setItem("sessionUserId", response.data.id_user);
+        sessionStorage.setItem("sessionUserEmail", email);
+        sessionStorage.setItem("sessionUserName", name);
         api.defaults.headers.common['authorization'] = "Bearer " + response.data.token;
       
         setUser(response.data);

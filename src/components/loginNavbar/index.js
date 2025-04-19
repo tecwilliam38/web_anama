@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/auth';
 import api from "../../constants/api"
@@ -13,6 +13,11 @@ export default function NaviBarLogin() {
     const [msg, setMsg] = useState("");
     const [showPpass, setShowPass] = useState("password");
     const {login, setUser} = useAuth()
+
+    // useEffect(()=>{
+
+    // },[])
+
 
     async function HandleLogin(e) {
         e.preventDefault();

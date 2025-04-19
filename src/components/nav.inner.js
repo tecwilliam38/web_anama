@@ -39,20 +39,19 @@ export default function NavInner() {
     async function uploadProfile() {
         // deleteImage();
         const { data, error } = await supabase.storage.from('profile')
-            .upload(usuarioLogado.id + "/" + uuidv4(), selectImage)
+            // .upload(usuarioLogado.id + "/" + uuidv4()+"foto", selectImage)
+            .upload(usuarioLogado.email + "/foto", selectImage)
         if (data) {
             getProfile();
-            // alert("foto Enviada")
         } else {
             console.log("imagens não encontradas", error);
-            // alert("foto não enviada")
         }
     }
     async function getProfile() {
         const { data, error } = await supabase
             .storage.from('profile')
             .list(usuarioLogado?.id + "/", {
-                limit: 10,
+                limit: 1,
                 offset: 0,
                 sortBy: { column: "name", order: "asc" }
             });
@@ -69,7 +68,7 @@ export default function NavInner() {
 
     }, [])
 
-    
+
 
     const settings = {
         dots: true,
@@ -83,9 +82,12 @@ export default function NavInner() {
 
     function Logout() {
         api.defaults.headers.common['authorization'] = "";
-        localStorage.clear()
-        const { error } = supabase.auth.signOut()
-        navigate("/");
+        localStorage.clear();
+        sessionStorage.clear();
+        setTimeout(() => {
+            const { error } = supabase.auth.signOut()
+            navigate("/");
+        }, 1000);
     }
     return (
         <>
@@ -127,7 +129,6 @@ export default function NavInner() {
                             <ul className="nav">
                                 <li className="nav-item mt-3">
                                     {localStorage.getItem("sessionName")}
-                                    <a className="nav-link disabled" href="#"></a>
                                 </li>
                                 <li className="nav-item dropdown">
                                     <a className="nav-link dropdown-toggle"
@@ -148,7 +149,7 @@ export default function NavInner() {
                                         }
                                         )}
                                     </a>
-                                    <div className="dropdown-menu mr-3" aria-labelledby="navbarDropdown">
+                                    <div className="dropdown-menu mr-5" aria-labelledby="navbarDropdown">
                                         <a className="dropdown-item" href="#">Ação</a>
                                         {/* {userProfile === null ? */}
                                         <a
@@ -157,6 +158,7 @@ export default function NavInner() {
                                             data-toggle="modal" data-target="#modalSelect-profile">
                                             Alterar foto do perfil
                                         </a>
+                                    
                                         {/* :
                                        <></>
                                        } */}
