@@ -6,9 +6,9 @@ import { GoHomeFill } from "react-icons/go";
 import { MdOutlineGroups2 } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import api from '../constants/api';
-import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
+import { useUser } from '@supabase/auth-helpers-react';
 import { supabase } from '../App';
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
 
 
 export default function NavInner() {
@@ -35,12 +35,33 @@ export default function NavInner() {
             getProfile();
         }
     }
+
+// async function uploadImage(file, userId) {
+//   try {
+//     const filePath = `profile-pictures/${userId}.jpg`; // Define um caminho fixo para sobrescrever a imagem anterior
+//     const { data, error } = await supabase.storage
+// const { data, error } = await supabase.storage.from('profile')
+//       .from('seu-bucket')
+//       .upload(filePath, file, { upsert: true }); // O parâmetro `upsert: true` garante a substituição
+//        .upload(usuarioLogado.email + "/foto", selectImage,{ upsert: true })
+//     if (error) {
+//       throw error;
+//     }
+
+//     console.log('Imagem enviada com sucesso:', data);
+//   } catch (error) {
+//     console.error('Erro ao enviar a imagem:', error.message);
+//   }
+// }
+
+
     //  Armazenar a foto de perfil no supabase:   
     async function uploadProfile() {
         // deleteImage();
         const { data, error } = await supabase.storage.from('profile')
             // .upload(usuarioLogado.id + "/" + uuidv4()+"foto", selectImage)
-            .upload(usuarioLogado.email + "/foto", selectImage)
+            .upload(usuarioLogado.email + "/foto", selectImage,{ upsert: true })
+            // .upload(usuarioLogado.email + "/foto", selectImage)
         if (data) {
             getProfile();
         } else {
